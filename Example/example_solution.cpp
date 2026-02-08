@@ -19,7 +19,7 @@ int main() {
     
     std::cout << "Sum: " << sum << std::endl;
     std::cout << "Average: " << average << std::endl;
-    std::cout << "Test change" << std::endl;
+    // std::cout << "Test change" << std::endl;
     
     return 0;
 }
