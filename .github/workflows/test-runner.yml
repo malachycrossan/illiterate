@@ -1,0 +1,64 @@
+name: Code Testing Workflow
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for comparing changes
+    
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Install build tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ gcc make
+    
+    - name: Get modified files
+      id: changed-files
+      run: |
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+        else
+          BASE_SHA="${{ github.event.before }}"
+        fi
+        
+        # Get modified files
+        git diff --name-only $BASE_SHA ${{ github.sha }} > changed_files.txt
+        
+        # Filter for C++, C, and Java files
+        grep -E '\.(cpp|cc|cxx|c|java)$' changed_files.txt > filtered_files.txt || true
+        
+        if [ -s filtered_files.txt ]; then
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+        fi
+        
+        cat filtered_files.txt
+    
+    - name: Run tests
+      if: steps.changed-files.outputs.has_changes == 'true'
+      run: |
+        chmod +x .github/scripts/run_tests.sh
+        .github/scripts/run_tests.sh
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: test_results/
