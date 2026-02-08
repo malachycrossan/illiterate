@@ -20,21 +20,25 @@ test_cpp_file() {
     local base_name=$(basename "$source_file" .cpp)
     local dir_name=$(dirname "$source_file")
     
+    # Create results subfolder for this source file
+    local result_dir="test_results/${dir_name}"
+    mkdir -p "$result_dir"
+    
     echo -e "${YELLOW}Testing C++ file: $source_file${NC}"
     
     # Compile
-    g++ -std=c++17 -Wall -o "test_results/${base_name}" "$source_file" 2> "test_results/${base_name}_compile.log"
+    g++ -std=c++17 -Wall -o "${result_dir}/${base_name}" "$source_file" 2> "${result_dir}/${base_name}_compile.log"
     
     if [ $? -ne 0 ]; then
         echo -e "${RED}✗ Compilation failed for $source_file${NC}"
-        cat "test_results/${base_name}_compile.log"
+        cat "${result_dir}/${base_name}_compile.log"
         return 1
     fi
     
     echo -e "${GREEN}✓ Compilation successful${NC}"
     
     # Run tests
-    run_tests "test_results/${base_name}" "$dir_name" "$base_name"
+    run_tests "${result_dir}/${base_name}" "$dir_name" "$base_name" "$result_dir"
 }
 
 # Function to compile and test C files
@@ -43,21 +47,25 @@ test_c_file() {
     local base_name=$(basename "$source_file" .c)
     local dir_name=$(dirname "$source_file")
     
+    # Create results subfolder for this source file
+    local result_dir="test_results/${dir_name}"
+    mkdir -p "$result_dir"
+    
     echo -e "${YELLOW}Testing C file: $source_file${NC}"
     
     # Compile
-    gcc -std=c11 -Wall -o "test_results/${base_name}" "$source_file" 2> "test_results/${base_name}_compile.log"
+    gcc -std=c11 -Wall -o "${result_dir}/${base_name}" "$source_file" 2> "${result_dir}/${base_name}_compile.log"
     
     if [ $? -ne 0 ]; then
         echo -e "${RED}✗ Compilation failed for $source_file${NC}"
-        cat "test_results/${base_name}_compile.log"
+        cat "${result_dir}/${base_name}_compile.log"
         return 1
     fi
     
     echo -e "${GREEN}✓ Compilation successful${NC}"
     
     # Run tests
-    run_tests "test_results/${base_name}" "$dir_name" "$base_name"
+    run_tests "${result_dir}/${base_name}" "$dir_name" "$base_name" "$result_dir"
 }
 
 # Function to compile and test Java files
@@ -66,21 +74,25 @@ test_java_file() {
     local base_name=$(basename "$source_file" .java)
     local dir_name=$(dirname "$source_file")
     
+    # Create results subfolder for this source file
+    local result_dir="test_results/${dir_name}"
+    mkdir -p "$result_dir"
+    
     echo -e "${YELLOW}Testing Java file: $source_file${NC}"
     
     # Compile
-    javac "$source_file" -d test_results 2> "test_results/${base_name}_compile.log"
+    javac "$source_file" -d "$result_dir" 2> "${result_dir}/${base_name}_compile.log"
     
     if [ $? -ne 0 ]; then
         echo -e "${RED}✗ Compilation failed for $source_file${NC}"
-        cat "test_results/${base_name}_compile.log"
+        cat "${result_dir}/${base_name}_compile.log"
         return 1
     fi
     
     echo -e "${GREEN}✓ Compilation successful${NC}"
     
     # Run tests (Java needs different execution)
-    run_java_tests "$base_name" "$dir_name"
+    run_java_tests "$base_name" "$dir_name" "$result_dir"
 }
 
 # Function to run tests for compiled binaries (C/C++)
@@ -88,6 +100,7 @@ run_tests() {
     local executable=$1
     local dir_name=$2
     local base_name=$3
+    local result_dir=$4
     
     # Look for test files in tests directory
     local test_dir="${dir_name}/tests"
@@ -122,7 +135,7 @@ run_tests() {
         echo "  Running test: $test_name"
         
         # Run the program with input
-        timeout 5s "$executable" < "$input_file" > "test_results/${base_name}_${test_name}_actual.out" 2> "test_results/${base_name}_${test_name}_error.log"
+        timeout 5s "$executable" < "$input_file" > "${result_dir}/${base_name}_${test_name}_actual.out" 2> "${result_dir}/${base_name}_${test_name}_error.log"
         local exit_code=$?
         
         if [ $exit_code -eq 124 ]; then
@@ -133,13 +146,13 @@ run_tests() {
         
         if [ $exit_code -ne 0 ]; then
             echo -e "${RED}  ✗ Program crashed (exit code: $exit_code)${NC}"
-            cat "test_results/${base_name}_${test_name}_error.log"
+            cat "${result_dir}/${base_name}_${test_name}_error.log"
             FAILED_TESTS=$((FAILED_TESTS + 1))
             continue
         fi
         
         # Compare output
-        if diff -w "$expected_file" "test_results/${base_name}_${test_name}_actual.out" > "test_results/${base_name}_${test_name}_diff.txt" 2>&1; then
+        if diff -w "$expected_file" "${result_dir}/${base_name}_${test_name}_actual.out" > "${result_dir}/${base_name}_${test_name}_diff.txt" 2>&1; then
             echo -e "${GREEN}  ✓ Test passed${NC}"
             PASSED_TESTS=$((PASSED_TESTS + 1))
         else
@@ -147,8 +160,8 @@ run_tests() {
             echo "  Expected output:"
             head -5 "$expected_file"
             echo "  Actual output:"
-            head -5 "test_results/${base_name}_${test_name}_actual.out"
-            echo "  Diff saved to: test_results/${base_name}_${test_name}_diff.txt"
+            head -5 "${result_dir}/${base_name}_${test_name}_actual.out"
+            echo "  Diff saved to: ${result_dir}/${base_name}_${test_name}_diff.txt"
             FAILED_TESTS=$((FAILED_TESTS + 1))
         fi
     done
@@ -158,6 +171,7 @@ run_tests() {
 run_java_tests() {
     local base_name=$1
     local dir_name=$2
+    local result_dir=$3
     
     # Look for test files in tests directory
     local test_dir="${dir_name}/tests"
@@ -192,7 +206,7 @@ run_java_tests() {
         echo "  Running test: $test_name"
         
         # Run the Java program with input
-        timeout 5s java -cp test_results "$base_name" < "$input_file" > "test_results/${base_name}_${test_name}_actual.out" 2> "test_results/${base_name}_${test_name}_error.log"
+        timeout 5s java -cp "$result_dir" "$base_name" < "$input_file" > "${result_dir}/${base_name}_${test_name}_actual.out" 2> "${result_dir}/${base_name}_${test_name}_error.log"
         local exit_code=$?
         
         if [ $exit_code -eq 124 ]; then
@@ -203,13 +217,13 @@ run_java_tests() {
         
         if [ $exit_code -ne 0 ]; then
             echo -e "${RED}  ✗ Program crashed (exit code: $exit_code)${NC}"
-            cat "test_results/${base_name}_${test_name}_error.log"
+            cat "${result_dir}/${base_name}_${test_name}_error.log"
             FAILED_TESTS=$((FAILED_TESTS + 1))
             continue
         fi
         
         # Compare output
-        if diff -w "$expected_file" "test_results/${base_name}_${test_name}_actual.out" > "test_results/${base_name}_${test_name}_diff.txt" 2>&1; then
+        if diff -w "$expected_file" "${result_dir}/${base_name}_${test_name}_actual.out" > "${result_dir}/${base_name}_${test_name}_diff.txt" 2>&1; then
             echo -e "${GREEN}  ✓ Test passed${NC}"
             PASSED_TESTS=$((PASSED_TESTS + 1))
         else
@@ -217,8 +231,8 @@ run_java_tests() {
             echo "  Expected output:"
             head -5 "$expected_file"
             echo "  Actual output:"
-            head -5 "test_results/${base_name}_${test_name}_actual.out"
-            echo "  Diff saved to: test_results/${base_name}_${test_name}_diff.txt"
+            head -5 "${result_dir}/${base_name}_${test_name}_actual.out"
+            echo "  Diff saved to: ${result_dir}/${base_name}_${test_name}_diff.txt"
             FAILED_TESTS=$((FAILED_TESTS + 1))
         fi
     done
