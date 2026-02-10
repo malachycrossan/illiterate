@@ -1,3 +1,5 @@
+// 2026-02-06-Competition/lotto.c
+// Author: ?
 #include <stdio.h>
 
 int main() {

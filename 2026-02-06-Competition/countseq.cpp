@@ -1,3 +1,5 @@
+// 2026-02-06-Competition/countseq.cpp
+// Author: Malachy Crossan
 #include <iostream>
 #include <string>
 using namespace std;

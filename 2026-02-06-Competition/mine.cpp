@@ -1,3 +1,5 @@
+// 2026-02-06-Competition/mine.cpp
+// Author: Malachy Crossan
 #include <cstdlib>
 #include <iostream>
 using namespace std;

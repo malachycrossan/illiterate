@@ -1,3 +1,5 @@
+// 2026-02-06-Competition/christmas.cpp
+// Author: ?
 #include <iostream>
 #include <vector>
 #include <list>

@@ -1,3 +1,6 @@
+// 2026-02-06-Competition/nametag.java
+// Author: ?
+
 import java.util.*;
 public class nametag {
 	public static void main(String[] args) {
