@@ -1,4 +1,4 @@
-# Test Results Summary
+# Test Results: `2026-02-06-Competition`
 
 **Date:** 2026-02-10 21:40:27 UTC  
 **Commit:** `0c5e6a4`  
@@ -13,15 +13,11 @@
 | Failed | 0 ❌ |
 | Success Rate | 100.0% |
 
-## Results by Source File
+## Test Details
 
-### ✅ `2026-02-06-Competition`
+### ✅ countseq countseq test1
 
-| Tests | Passed | Failed |
-|-------|--------|--------|
-| 1 | 1 | 0 |
-
-[View detailed results](2026-02-06-Competition/SUMMARY.md)
+**Status:** Passed
 
 
 ---
