@@ -39,11 +39,27 @@ jobs:
           BASE_SHA="${{ github.event.before }}"
         fi
         
-        # Get modified files
+        # Get modified/added files
         git diff --name-only $BASE_SHA ${{ github.sha }} > changed_files.txt
         
         # Filter for C++, C, and Java files
         grep -E '\.(cpp|cc|cxx|c|java)$' changed_files.txt > filtered_files.txt || true
+        
+        # Check for added/modified test files and add corresponding source files
+        git diff --name-only --diff-filter=A $BASE_SHA ${{ github.sha }} > added_files.txt || true
+        
+        # Extract program names from test files and find corresponding source files
+        grep -oE '[^/]+_test[0-9]+\.(in|out)$' added_files.txt 2>/dev/null | sed 's/_test[0-9]*\.\(in\|out\)$//' | sort | uniq > program_names.txt || true
+        
+        while IFS= read -r prog_name; do
+          # Look for corresponding source files in the repo root and subdirectories
+          if [ ! -z "$prog_name" ]; then
+            find . -maxdepth 3 -type f \( -name "${prog_name}.cpp" -o -name "${prog_name}.c" -o -name "${prog_name}.cxx" -o -name "${prog_name}.cc" -o -name "${prog_name}.java" \) | grep -v test_results >> filtered_files.txt || true
+          fi
+        done < program_names.txt
+        
+        # Remove duplicates and sort
+        sort -u filtered_files.txt -o filtered_files.txt
         
         if [ -s filtered_files.txt ]; then
           echo "has_changes=true" >> $GITHUB_OUTPUT
