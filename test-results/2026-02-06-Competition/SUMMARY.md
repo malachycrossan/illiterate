@@ -1,43 +1,50 @@
 # Test Results: `2026-02-06-Competition`
 
-**Date:** 2026-02-10 22:10:35 UTC  
-**Commit:** `c2deb24`  
-**Status:** ✅ PASSED
+**Date:** 2026-02-10 22:26:03 UTC  
+**Commit:** `73ff302`  
+**Status:** ❌ FAILED
 
 ## Overview
 
 | Metric | Count |
 |--------|-------|
-| Total Tests | 6 |
-| Passed | 6 ✅ |
-| Failed | 0 ❌ |
-| Success Rate | 100.0% |
+| Total Tests | 2 |
+| Passed | 1 ✅ |
+| Failed | 1 ❌ |
+| Success Rate | 50.0% |
 
 ## Test Details
-
-### ✅ christmas christmas test1
-
-**Status:** Passed
 
 ### ✅ countseq countseq test1
 
 **Status:** Passed
 
-### ✅ lotto lotto test1
+### ❌ countseq countseq test2
 
-**Status:** Passed
+**Status:** Failed
 
-### ✅ mine mine test1
+<details>
+<summary>View Diff</summary>
 
-**Status:** Passed
+```diff
+1,6c1,6
+< 1
+< 3
+< 6
+< 10
+< 15
+< 21
+\ No newline at end of file
+---
+> 0
+> 0
+> 0
+> 0
+> 0
+> 0
+```
 
-### ✅ nametag nametag test1
-
-**Status:** Passed
-
-### ✅ robot robot test1
-
-**Status:** Passed
+</details>
 
 
 ---
