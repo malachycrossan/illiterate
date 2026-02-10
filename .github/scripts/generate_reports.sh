@@ -118,46 +118,64 @@ done
 # Generate Global Markdown Report
 # ============================================
 
-# Read summary data from the main summary file
-TOTAL_TESTS=0
-PASSED_TESTS=0
-FAILED_TESTS=0
+# Read summary data from the main summary file (current run only)
+CURRENT_TOTAL_TESTS=0
+CURRENT_PASSED_TESTS=0
+CURRENT_FAILED_TESTS=0
 STATUS="UNKNOWN"
 
 if [ -f "test_results/summary.txt" ]; then
-    TOTAL_TESTS=$(grep "Total tests:" test_results/summary.txt | awk '{print $3}')
-    PASSED_TESTS=$(grep "Passed:" test_results/summary.txt | awk '{print $2}')
-    FAILED_TESTS=$(grep "Failed:" test_results/summary.txt | awk '{print $2}')
+    CURRENT_TOTAL_TESTS=$(grep "Total tests:" test_results/summary.txt | awk '{print $3}')
+    CURRENT_PASSED_TESTS=$(grep "Passed:" test_results/summary.txt | awk '{print $2}')
+    CURRENT_FAILED_TESTS=$(grep "Failed:" test_results/summary.txt | awk '{print $2}')
     STATUS=$(grep "Status:" test_results/summary.txt | awk '{print $2}')
 fi
+
+# Calculate aggregated totals (current + cached)
+TOTAL_TESTS=$CURRENT_TOTAL_TESTS
+PASSED_TESTS=$CURRENT_PASSED_TESTS
+FAILED_TESTS=$CURRENT_FAILED_TESTS
+
+# Track which folders were tested in this run (have _actual.out files)
+TESTED_FOLDERS=""
+
 cat > test_results/summary.md << EOF
 # Test Results Summary
 
 **Date:** $TIMESTAMP  
 **Commit:** \`$COMMIT_SHORT\`  
-**Status:** $([ "$STATUS" = "SUCCESS" ] && echo "✅ PASSED" || echo "❌ FAILED")
 
 ## Overview
 
 | Metric | Count |
 |--------|-------|
-| Total Tests | $TOTAL_TESTS |
-| Passed | $PASSED_TESTS ✅ |
-| Failed | $FAILED_TESTS ❌ |
-| Success Rate | $([ $TOTAL_TESTS -gt 0 ] && echo "scale=1; $PASSED_TESTS * 100 / $TOTAL_TESTS" | bc || echo "0")% |
+| Tests (This Run) | $CURRENT_TOTAL_TESTS |
+| Passed (This Run) | $CURRENT_PASSED_TESTS ✅ |
+| Failed (This Run) | $CURRENT_FAILED_TESTS ❌ |
 
 ## Results by Source File
 
+### This Run
+
 EOF
 
-# Add results grouped by source folder
+if [ $CURRENT_TOTAL_TESTS -eq 0 ]; then
+    cat >> test_results/summary.md << EOF
+No tests were run in this commit.
+
+EOF
+fi
+
+# Add results grouped by source folder (current run)
 for source_dir in test_results/*/; do
     if [ -d "$source_dir" ]; then
         source_path="${source_dir#test_results/}"
         source_path="${source_path%/}"
         
-        # Check if this folder has a SUMMARY.md
-        if [ -f "${source_dir}SUMMARY.md" ]; then
+        # Check if this folder was tested in current run (has _actual.out files)
+        if ls "${source_dir}"*_actual.out 1> /dev/null 2>&1; then
+            TESTED_FOLDERS="$TESTED_FOLDERS $source_dir"
+            
             # Count tests for this folder
             FOLDER_TOTAL=0
             FOLDER_PASSED=0
@@ -181,7 +199,7 @@ for source_dir in test_results/*/; do
             FOLDER_STATUS=$([ $FOLDER_FAILED -eq 0 ] && echo "✅" || echo "❌")
             
             cat >> test_results/summary.md << EOF
-### $FOLDER_STATUS \`$source_path\`
+#### $FOLDER_STATUS \`$source_path\`
 
 | Tests | Passed | Failed |
 |-------|--------|--------|
@@ -194,9 +212,80 @@ EOF
     fi
 done
 
+# Add cached results (folders with SUMMARY.md but no _actual.out files from this run)
+HAS_CACHED=0
+for source_dir in test_results/*/; do
+    if [ -d "$source_dir" ]; then
+        source_path="${source_dir#test_results/}"
+        source_path="${source_path%/}"
+        
+        # Check if folder has SUMMARY.md but wasn't tested in current run
+        if [ -f "${source_dir}SUMMARY.md" ] && ! echo "$TESTED_FOLDERS" | grep -q "$source_dir"; then
+            if [ $HAS_CACHED -eq 0 ]; then
+                cat >> test_results/summary.md << EOF
+
+### Cached Results (From Previous Runs)
+
+EOF
+                HAS_CACHED=1
+            fi
+            
+            # Count tests for this folder from cached results
+            FOLDER_TOTAL=0
+            FOLDER_PASSED=0
+            FOLDER_FAILED=0
+            
+            for actual_file in "${source_dir}"*_actual.out; do
+                if [ -f "$actual_file" ]; then
+                    FOLDER_TOTAL=$((FOLDER_TOTAL + 1))
+                    
+                    base_name=$(basename "$actual_file" _actual.out)
+                    diff_file="${source_dir}${base_name}_diff.txt"
+                    
+                    if [ -f "$diff_file" ] && [ -s "$diff_file" ]; then
+                        FOLDER_FAILED=$((FOLDER_FAILED + 1))
+                    else
+                        FOLDER_PASSED=$((FOLDER_PASSED + 1))
+                    fi
+                fi
+            done
+            
+            FOLDER_STATUS=$([ $FOLDER_FAILED -eq 0 ] && echo "✅" || echo "❌")
+            
+            # Get timestamp from folder (try to extract from SUMMARY.md)
+            FOLDER_DATE=$(grep "^**Date:**" "${source_dir}SUMMARY.md" 2>/dev/null | sed 's/.*Date: //' | sed 's/ .*//' || echo "unknown date")
+            
+            cat >> test_results/summary.md << EOF
+#### $FOLDER_STATUS \`$source_path\` _(${FOLDER_DATE})_
+
+| Tests | Passed | Failed |
+|-------|--------|--------|
+| $FOLDER_TOTAL | $FOLDER_PASSED | $FOLDER_FAILED |
+
+[View detailed results]($source_path/SUMMARY.md)
+
+EOF
+            
+            # Add to aggregated totals
+            TOTAL_TESTS=$((TOTAL_TESTS + FOLDER_TOTAL))
+            PASSED_TESTS=$((PASSED_TESTS + FOLDER_PASSED))
+            FAILED_TESTS=$((FAILED_TESTS + FOLDER_FAILED))
+        fi
+    fi
+done
+
 cat >> test_results/summary.md << EOF
 
 ---
+
+## Aggregated Statistics (Current + Cached)
+
+| Metric | Count |
+|--------|-------|
+| **Total Tests** | **$TOTAL_TESTS** |
+| **Passed** | **$PASSED_TESTS ✅** |
+| **Failed** | **$FAILED_TESTS ❌** |
+| **Success Rate** | **$([ $TOTAL_TESTS -gt 0 ] && echo "scale=1; $PASSED_TESTS * 100 / $TOTAL_TESTS" | bc || echo "0")%** |
 
 *Generated by GitHub Actions*
 EOF
