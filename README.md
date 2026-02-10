@@ -19,12 +19,12 @@ FilePath/
 │  ├─ ProgramName_test2.out
 test-results/
 ├─ FilePath/
-│  ├─ summary.md                       //summary of tests inside 'FilePath'
+│  ├─ SUMMARY.md                       //summary of tests inside 'FilePath'
 │  ├─ ProgramName_test1_actual.out
 │  ├─ ProgramName_test2_actual.out
 │  ├─ ProgramName_test1_diff.txt
 │  ├─ ProgramName_test2_diff.txt
 │  ├─ ProgramName_test1_error.log
 │  ├─ ProgramName_test2_error.log
-├─ SUMMARY.md                          //summary of all tests
+├─ summary.md                          //summary of all tests
 ```
