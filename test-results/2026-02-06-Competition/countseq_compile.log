@@ -1,14 +1,14 @@
-./2026-02-06-Competition/countseq.cpp: In function ‘long long int countseq(std::string, std::string, long long int, long long int, long long int**)’:
-./2026-02-06-Competition/countseq.cpp:6:20: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
-    6 |   if (subseq_index == subseq.length()) return 1;
+2026-02-06-Competition/countseq.cpp: In function ‘long long int countseq(std::string, std::string, long long int, long long int, long long int**)’:
+2026-02-06-Competition/countseq.cpp:8:20: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+    8 |   if (subseq_index == subseq.length()) return 1;
       |       ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
-./2026-02-06-Competition/countseq.cpp:14:19: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
-   14 |   while (curr + 1 <= input.length()) {
+2026-02-06-Competition/countseq.cpp:16:19: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   16 |   while (curr + 1 <= input.length()) {
       |          ~~~~~~~~~^~~~~~~~~~~~~~~~~
-./2026-02-06-Competition/countseq.cpp: In function ‘int main()’:
-./2026-02-06-Competition/countseq.cpp:45:29: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
-   45 |     for (long long i = 0; i < (input.length() + 1); i++) {
+2026-02-06-Competition/countseq.cpp: In function ‘int main()’:
+2026-02-06-Competition/countseq.cpp:47:29: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   47 |     for (long long i = 0; i < (input.length() + 1); i++) {
       |                           ~~^~~~~~~~~~~~~~~~~~~~~~
-./2026-02-06-Competition/countseq.cpp:47:31: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
-   47 |       for (long long j = 0; j < (subseq.length() + 1); j++){
+2026-02-06-Competition/countseq.cpp:49:31: warning: comparison of integer expressions of different signedness: ‘long long int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   49 |       for (long long j = 0; j < (subseq.length() + 1); j++){
       |                             ~~^~~~~~~~~~~~~~~~~~~~~~~
