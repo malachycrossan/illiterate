@@ -1,7 +1,7 @@
 Test Summary
 ============
 Total tests:  4
-Passed:       2
-Failed:       2
+Passed:       4
+Failed:       0
 
-Status: FAILURE
+Status: SUCCESS
