@@ -3,11 +3,11 @@
 #include <iostream>
 using namespace std;
 
-int stick_cost(int* cuts, int length, int left, int right) {
+int stick_cost(int* cuts, int left, int right) {
 int index_length = right - left;
 if (index_length < 2) return 0;
 int middle = index_length / 2 + left;
-return (cuts[right] - cuts[left]) + stick_cost(cuts, length, left, middle - 1) + stick_cost(cuts, length, middle + 1, right);
+return (cuts[right] - cuts[left]) + stick_cost(cuts, left, middle) + stick_cost(cuts, middle, right);
 }
 
 int main () {
@@ -26,7 +26,7 @@ int main () {
       cin >> cuts[j];
     }
 
-    cout << stick_cost(cuts, length, 0, num_cuts);
+    cout << stick_cost(cuts, 0, num_cuts + 1) << endl;
 
     free(cuts);
   }
