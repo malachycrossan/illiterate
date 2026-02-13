@@ -3,23 +3,16 @@
 #include <iostream>
 using namespace std;
 
-int dinner(int total, int* memo_table) {
-  // for (int j = 0; j < total; j++) cout << memo_table[j] << " ";
-  // cout << endl;
+long dinner(int total, long* memo_table) {
   if (total < 0) return 0;
   if (total == 0) return 1;
-  if (memo_table[total] > 0) {
-    // cout << memo_table[total];
-    return memo_table[total];
-  }
-  int count = 0;
-  count += dinner(total - 2, memo_table);
-  // cout << "Count: " << count << " ";
-  count += dinner(total - 5, memo_table);
-  // cout << "Count: " << count << " ";
-  count += dinner(total - 10, memo_table);
-  // cout << "Count: " << count << " ";
+  // for (int j = 0; j < total; j++) cout << memo_table[j] << " ";
+  // cout << endl;
+  if (memo_table[total] > 0) return memo_table[total];
+  long count = dinner(total - 2, memo_table) + dinner(total - 5, memo_table) + dinner(total - 10, memo_table);
   memo_table[total] = count;
+  // for (int j = 0; j < total; j++) cout << memo_table[j] << " ";
+  // cout << endl;
   return count;
 }
 
@@ -30,11 +23,9 @@ int main () {
   int total;
   for (int i = 0; i < num_cases; i++) {
     cin >> total;
-    // int* memo_table = (int*)calloc(total, sizeof(int));
-    // int* memo_table = (int*)malloc(total * sizeof(int));
-    int* memo_table = new int[total];
+    long* memo_table = new long[total + 1];
     for (int j = 0; j < total; j++) memo_table[j] = -1;
-    cout << dinner(total, memo_table) << endl;
+    cout << "Dinner #" << i + 1 << ": " << dinner(total, memo_table) << endl;
   }
 
   return 0;
