@@ -3,26 +3,26 @@
 #include <iostream>
 using namespace std;
 
-int stick_cost(int* cuts, int left, int right) {
-int index_length = right - left;
+long long stick_cost(long long* cuts, long long left, long long right) {
+long long index_length = right - left;
 if (index_length < 2) return 0;
-int middle = index_length / 2 + left;
+long long middle = index_length / 2 + left;
 return (cuts[right] - cuts[left]) + stick_cost(cuts, left, middle) + stick_cost(cuts, middle, right);
 }
 
 int main () {
-  int num_cases;
+  long long num_cases;
   cin >> num_cases;
 
-  int num_cuts, length;
-  for (int i = 0; i < num_cases; i++) {
+  long long num_cuts, length;
+  for (long long i = 0; i < num_cases; i++) {
     cin >> length;
     cin >> num_cuts;
-    int* cuts = (int*)malloc(sizeof(int) * (num_cuts + 2));
+    long long* cuts = (long long*)malloc(sizeof(long long) * (num_cuts + 2));
     cuts[0] = 0;
     cuts[num_cuts + 1] = length;
 
-    for (int j = 1; j < num_cuts + 1; j++) {
+    for (long long j = 1; j < num_cuts + 1; j++) {
       cin >> cuts[j];
     }
 
