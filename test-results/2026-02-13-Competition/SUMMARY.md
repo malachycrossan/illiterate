@@ -1,35 +1,37 @@
 # Test Results: `2026-02-13-Competition`
 
-**Date:** 2026-02-13 16:47:16 UTC  
-**Commit:** `dd1739f`  
-**Status:** ✅ PASSED
+**Date:** 2026-02-15 17:23:12 UTC  
+**Commit:** `6f9d273`  
+**Status:** ❌ FAILED
 
 ## Overview
 
 | Metric | Count |
 |--------|-------|
-| Total Tests | 4 |
-| Passed | 4 ✅ |
-| Failed | 0 ❌ |
-| Success Rate | 100.0% |
+| Total Tests | 1 |
+| Passed | 0 ✅ |
+| Failed | 1 ❌ |
+| Success Rate | 0% |
 
 ## Test Details
 
-### ✅ sticks sticks test1
+### ❌ mixedset mixedset test1
 
-**Status:** Passed
+**Status:** Failed
 
-### ✅ sticks sticks test2
+<details>
+<summary>View Diff</summary>
 
-**Status:** Passed
+```diff
+0a1
+> memo[1] = 0
+1a3
+> memo[1] = 0
+2a5
+> memo[1] = 0
+```
 
-### ✅ sticks sticks test3
-
-**Status:** Passed
-
-### ✅ sticks sticks test4
-
-**Status:** Passed
+</details>
 
 
 ---
