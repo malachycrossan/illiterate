@@ -6,7 +6,13 @@ using namespace std;
 long long stick_cost(long long* cuts, long long left, long long right) {
 long long index_length = right - left;
 if (index_length < 2) return 0;
-long long middle = index_length / 2 + left;
+float median = (cuts[right] - cuts[left] )/ 2 + left;
+long long middle;
+if (cuts[(long long)median] < cuts[(long long)median + 1]) {
+  middle = (long long)median + 1;
+} else {
+  middle = (long long)median;
+}
 return (cuts[right] - cuts[left]) + stick_cost(cuts, left, middle) + stick_cost(cuts, middle, right);
 }
 
