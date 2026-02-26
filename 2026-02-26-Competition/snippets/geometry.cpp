@@ -59,8 +59,6 @@ choose_a_type dot_scalars(choose_a_type ax, choose_a_type ay, choose_a_type bx, 
     return ax * bx + ay * by;
 }
 
-
-
 struct vect2D {
 
     double x;
@@ -142,3 +140,10 @@ struct line {
         return a*d - b*c;
     }
 };
+double length(point2d a) {
+    return sqrt(dot_points(a, a));
+}
+
+double angle(point2d a, point2d b) {
+    return acos(dot_points(a, b) / length(a) / length(b));
+}
