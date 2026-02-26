@@ -58,3 +58,87 @@ choose_a_type dot_points(point2d a, point2d b) {
 choose_a_type dot_scalars(choose_a_type ax, choose_a_type ay, choose_a_type bx, choose_a_type by) {
     return ax * bx + ay * by;
 }
+
+
+
+struct vect2D {
+
+    double x;
+    double y;
+
+    vect2D(double myx, double myy) {
+        x = myx;
+        y = myy;
+    }
+
+    vect2D(point2d start, point2d end) {
+        x = end.x - start.x;
+        y = end.y - start.y;
+    }
+
+    double dot(vect2D other) {
+        return x*other.x + y*other.y;
+    }
+
+    double mag() {
+        return sqrt(x*x+y*y);
+    }
+
+    // Thjs formula comes from using the relationship between the dot product and
+    // the cosine of the included angle.
+    double angle(vect2D other) {
+        return acos(dot(other)/mag()/other.mag());
+    }
+
+    double signedCrossMag(vect2D other) {
+        return x*other.y-other.x*y;
+    }
+
+    double crossMag(vect2D other) {
+        return abs(signedCrossMag(other));
+    }
+};
+
+
+struct line {
+
+    double EPSILON = 1e-9;
+
+    point2d p;
+    vect2D dir;
+
+    line(point2d start, point2d end) {
+        p = start;
+        dir = vect2D(start, end);
+    }
+
+    point2d intersect(line other) {
+
+        // This is the denominator we get when setting up our system of equations for
+        // our two parametric line parameters.
+        double den = det(dir.x, -other.dir.x, dir.y, -other.dir.y);
+        if (abs(den) < EPSILON) return;
+
+        // We already have the denominator, now solve for the numerator for lambda, the
+        // parameter for this line. Then return the resultant point.
+        double numLambda = det(other.p.x-p.x, -other.dir.x, other.p.y-p.y, -other.dir.y);
+        return eval(numLambda/den);
+    }
+
+    // Returns the shortest distance from other to this line. Sets a vector from the starting
+    // point of this line to other and uses the cross product with that vector and the direction
+    // vector of the line.
+    double distance(point2d other) {
+        vect2D toPt = vect2D(p, other);
+        return dir.crossMag(toPt)/dir.mag();
+    }
+
+    // Returns the point on this line corresponding to parameter lambda.
+    point2d eval(double lambda) {
+        return point2d(p.x+lambda*dir.x, p.y+lambda*dir.y);
+    }
+
+    double det(double a, double b, double c, double d) {
+        return a*d - b*c;
+    }
+};
