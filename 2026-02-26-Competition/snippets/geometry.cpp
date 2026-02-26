@@ -147,3 +147,13 @@ double length(point2d a) {
 double angle(point2d a, point2d b) {
     return acos(dot_points(a, b) / length(a) / length(b));
 }
+
+// Area of a polygon.
+// IMPORTANT NOTE: STORE POINTS IN COUNTER-CLOCKWISE ORDER.
+double polyArea(point2d points[], int numPoints) {
+    double ret = 0.0f;    
+    for(int i = 0; i < numPoints; i++) {
+        ret += (points[i].x * points[(i+1)%numPoints].y) - (points[(i+1)%numPoints].x * points[i].y);
+    }
+    return (0.5f)*ret;
+}
