@@ -1,6 +1,8 @@
 #include <math.h>
 #include <cmath>
 
+#define choose_a_type int // int, double, float, long long
+
 struct point2d {
   choose_a_type x, y;
   point2d() {}
@@ -48,3 +50,11 @@ struct point2d {
   point2d operator/(choose_a_type t) const { return point2d(*this) /= t; }
 };
 point2d operator*(choose_a_type a, point2d b) { return b * a; }
+
+choose_a_type dot_points(point2d a, point2d b) {
+    return a.x * b.x + a.y * b.y;
+}
+
+choose_a_type dot_scalars(choose_a_type ax, choose_a_type ay, choose_a_type bx, choose_a_type by) {
+    return ax * bx + ay * by;
+}
