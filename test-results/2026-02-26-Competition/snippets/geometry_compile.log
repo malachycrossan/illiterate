@@ -1,3 +1,22 @@
-/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o: in function `_start':
-(.text+0x1b): undefined reference to `main'
-collect2: error: ld returned 1 exit status
+2026-02-26-Competition/snippets/geometry.cpp: In constructor ‘line::line(point2d, point2d)’:
+2026-02-26-Competition/snippets/geometry.cpp:110:38: error: no matching function for call to ‘vect2D::vect2D()’
+  110 |     line(point2d start, point2d end) {
+      |                                      ^
+2026-02-26-Competition/snippets/geometry.cpp:74:5: note: candidate: ‘vect2D::vect2D(point2d, point2d)’
+   74 |     vect2D(point2d start, point2d end) {
+      |     ^~~~~~
+2026-02-26-Competition/snippets/geometry.cpp:74:5: note:   candidate expects 2 arguments, 0 provided
+2026-02-26-Competition/snippets/geometry.cpp:69:5: note: candidate: ‘vect2D::vect2D(double, double)’
+   69 |     vect2D(double myx, double myy) {
+      |     ^~~~~~
+2026-02-26-Competition/snippets/geometry.cpp:69:5: note:   candidate expects 2 arguments, 0 provided
+2026-02-26-Competition/snippets/geometry.cpp:64:8: note: candidate: ‘constexpr vect2D::vect2D(const vect2D&)’
+   64 | struct vect2D {
+      |        ^~~~~~
+2026-02-26-Competition/snippets/geometry.cpp:64:8: note:   candidate expects 1 argument, 0 provided
+2026-02-26-Competition/snippets/geometry.cpp:64:8: note: candidate: ‘constexpr vect2D::vect2D(vect2D&&)’
+2026-02-26-Competition/snippets/geometry.cpp:64:8: note:   candidate expects 1 argument, 0 provided
+2026-02-26-Competition/snippets/geometry.cpp: In member function ‘point2d line::intersect(line)’:
+2026-02-26-Competition/snippets/geometry.cpp:120:33: error: return-statement with no value, in function returning ‘point2d’ [-fpermissive]
+  120 |         if (abs(den) < EPSILON) return;
+      |                                 ^~~~~~
