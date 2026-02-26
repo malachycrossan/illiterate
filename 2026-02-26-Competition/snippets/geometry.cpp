@@ -1,3 +1,6 @@
+#include <math.h>
+#include <cmath>
+
 struct point2d {
   choose_a_type x, y;
   point2d() {}
@@ -22,6 +25,23 @@ struct point2d {
     y /= t;
     return *this;
   }
+
+   // Returns the vector from this to other.
+	point2d getVect(point2d o) {
+        // Returns a new point.
+		return point2d(o.x-x, o.y-y);
+	}
+
+    // Returns the distance between this and other.
+	double dist(point2d o) {
+		return sqrt((o.x-x)*(o.x-x) + (o.y-y)*(o.y-y));
+	}
+
+	// Returns the magnitude ot this cross product other.
+	int crossProductMag(point2d o) {
+		return x*o.y - y*o.x;
+	}
+
   point2d operator+(const point2d &t) const { return point2d(*this) += t; }
   point2d operator-(const point2d &t) const { return point2d(*this) -= t; }
   point2d operator*(choose_a_type t) const { return point2d(*this) *= t; }
