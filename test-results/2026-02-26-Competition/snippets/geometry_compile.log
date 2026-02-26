@@ -1,22 +1,21 @@
-2026-02-26-Competition/snippets/geometry.cpp: In constructor ‘line::line(point2d, point2d)’:
-2026-02-26-Competition/snippets/geometry.cpp:108:38: error: no matching function for call to ‘vect2D::vect2D()’
-  108 |     line(point2d start, point2d end) {
-      |                                      ^
-2026-02-26-Competition/snippets/geometry.cpp:72:5: note: candidate: ‘vect2D::vect2D(point2d, point2d)’
-   72 |     vect2D(point2d start, point2d end) {
-      |     ^~~~~~
-2026-02-26-Competition/snippets/geometry.cpp:72:5: note:   candidate expects 2 arguments, 0 provided
-2026-02-26-Competition/snippets/geometry.cpp:67:5: note: candidate: ‘vect2D::vect2D(double, double)’
-   67 |     vect2D(double myx, double myy) {
-      |     ^~~~~~
-2026-02-26-Competition/snippets/geometry.cpp:67:5: note:   candidate expects 2 arguments, 0 provided
-2026-02-26-Competition/snippets/geometry.cpp:62:8: note: candidate: ‘constexpr vect2D::vect2D(const vect2D&)’
-   62 | struct vect2D {
-      |        ^~~~~~
-2026-02-26-Competition/snippets/geometry.cpp:62:8: note:   candidate expects 1 argument, 0 provided
-2026-02-26-Competition/snippets/geometry.cpp:62:8: note: candidate: ‘constexpr vect2D::vect2D(vect2D&&)’
-2026-02-26-Competition/snippets/geometry.cpp:62:8: note:   candidate expects 1 argument, 0 provided
-2026-02-26-Competition/snippets/geometry.cpp: In member function ‘point2d line::intersect(line)’:
-2026-02-26-Competition/snippets/geometry.cpp:118:33: error: return-statement with no value, in function returning ‘point2d’ [-fpermissive]
-  118 |         if (abs(den) < EPSILON) return;
-      |                                 ^~~~~~
+2026-02-26-Competition/snippets/geometry.java:122: error: cannot find symbol
+        double numLambda = det(other.p.x-p.x, -other.p2.x, other.p.y-p.y, -other.p2.y);
+                                    ^
+  symbol:   variable p
+  location: variable other of type line
+2026-02-26-Competition/snippets/geometry.java:122: error: cannot find symbol
+        double numLambda = det(other.p.x-p.x, -other.p2.x, other.p.y-p.y, -other.p2.y);
+                                         ^
+  symbol:   variable p
+  location: class line
+2026-02-26-Competition/snippets/geometry.java:122: error: cannot find symbol
+        double numLambda = det(other.p.x-p.x, -other.p2.x, other.p.y-p.y, -other.p2.y);
+                                                                ^
+  symbol:   variable p
+  location: variable other of type line
+2026-02-26-Competition/snippets/geometry.java:122: error: cannot find symbol
+        double numLambda = det(other.p.x-p.x, -other.p2.x, other.p.y-p.y, -other.p2.y);
+                                                                     ^
+  symbol:   variable p
+  location: class line
+4 errors
