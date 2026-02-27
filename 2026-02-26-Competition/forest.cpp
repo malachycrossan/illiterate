@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -17,15 +18,18 @@ struct P {
     P() : x(0), y(0) {}
     P(T x, T y) : x(x), y(y) {}
 
-    P operator+(P b)  const { return {x+b.x, y+b.y}; }
+    // P operator+(P b)  const { return {x+b.x, y+b.y}; }
     P operator-(P b)  const { return {x-b.x, y-b.y}; }
-    P operator*(T s)  const { return {x*s, y*s}; }
-    P operator/(T s)  const { return {x/s, y/s}; }
-    P& operator+=(P b)      { x+=b.x; y+=b.y; return *this; }
-    P& operator-=(P b)      { x-=b.x; y-=b.y; return *this; }
-    P& operator*=(T s)      { x*=s; y*=s; return *this; }
-    P operator-() const     { return {-x, -y}; }
+    // P operator*(T s)  const { return {x*s, y*s}; }
+    // P operator/(T s)  const { return {x/s, y/s}; }
+    // P& operator+=(P b)      { x+=b.x; y+=b.y; return *this; }
+    // P& operator-=(P b)      { x-=b.x; y-=b.y; return *this; }
+    // P& operator*=(T s)      { x*=s; y*=s; return *this; }
+    // P operator-() const     { return {-x, -y}; }
 
+    bool operator<(P b)  const { return x<b.x || (x==b.x && y<b.y); }
+    bool operator==(P b) const { return x==b.x && y==b.y; }
+    bool operator!=(P b) const { return !(*this==b); }
 
     T cross(P b) const { return x*b.y - y*b.x; }
 
@@ -94,5 +98,7 @@ int main () {
         perimeter += segment_length;
         area += segment_length * c;
     }
-    cout << perimeter << " " << area;
+    cout << fixed;
+    cout << setprecision(2);
+    cout << perimeter << " " << area << endl;
 }
