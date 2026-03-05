@@ -3,7 +3,7 @@ using namespace std;
 
 typedef int T;
 
-struct FenwickTree {
+struct BIT {
     T tree[100005];
     int n;
 
@@ -53,7 +53,7 @@ int main() {
     T values[100005];
     for (int i = 0; i < n; i++) cin >> values[i];
 
-    FenwickTree ft;
+    BIT ft;
     ft.init(values, n);
 
     int q;
