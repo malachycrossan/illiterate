@@ -50,7 +50,7 @@ struct FenwickTree {
 int main() {
     int n;
     cin >> n;
-    T values[MAXN];
+    T values[100005];
     for (int i = 0; i < n; i++) cin >> values[i];
 
     FenwickTree ft;
