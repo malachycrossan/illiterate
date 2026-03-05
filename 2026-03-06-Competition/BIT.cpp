@@ -4,10 +4,10 @@ using namespace std;
 typedef int T;
 
 struct BIT {
-    T tree[100005];
+    T tree[100000];
     int n;
 
-    void init(T* values, int size) {
+    BIT(T* values, int size) {
         n = size;
         for (int i = 1; i <= n; i++)
             tree[i] = values[i - 1];
@@ -32,6 +32,8 @@ struct BIT {
         return query(r) - query(l - 1);
     }
 
+    T all () { return query(n - 1); }
+
     void update(int index, T value) {
         while (index <= n) {
             tree[index] += value;
@@ -40,21 +42,13 @@ struct BIT {
     }
 };
 
-// Input format:
-// First line: N (size), then N space-separated values
-// Then Q queries, each one of:
-//   Q i       -> prefix query up to i
-//   R l r     -> range query [l, r]
-//   U i v     -> update index i by v
-
 int main() {
     int n;
     cin >> n;
-    T values[100005];
+    T values[100000];
     for (int i = 0; i < n; i++) cin >> values[i];
 
-    BIT ft;
-    ft.init(values, n);
+    BIT ft(values, n);
 
     int q;
     cin >> q;
