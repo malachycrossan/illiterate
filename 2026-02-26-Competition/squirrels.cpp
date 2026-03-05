@@ -35,40 +35,15 @@ P operator*(T s, P v) { return v * s; }
 
 double dist(P a, P b) { return (a-b).mag(); }
 
-pair<P,P> closest_pair(vector<P> pts) {
-    sort(pts.begin(), pts.end());
-    int n=pts.size();
-    pair<P,P> best={pts[0],pts[1]};
-    double best_d=dist(pts[0],pts[1]);
-    vector<P> strip;
-
-    function<void(int,int)> solve = [&](int lo, int hi) {
-        if (hi-lo <= 3) {
-            for (int i=lo; i<hi; i++)
-                for (int j=i+1; j<hi; j++) {
-                    double d=dist(pts[i],pts[j]);
-                    if (d < best_d) { best_d=d; best={pts[i],pts[j]}; }
-                }
-            sort(pts.begin()+lo, pts.begin()+hi, [](P a,P b){ return a.y<b.y; });
-            return;
+double min_distance(P trees[], int t) {
+    double min_distance = 100000;
+    for (int i = 0; i < t; i++) {
+        for (int j = i + 1; j < t; j++) {
+            double distance = dist(trees[i], trees[j]);
+            if (distance < min_distance) min_distance = distance;
         }
-        int mid=(lo+hi)/2;
-        double mx=pts[mid].x;
-        solve(lo,mid);
-        solve(mid,hi);
-        inplace_merge(pts.begin()+lo, pts.begin()+mid, pts.begin()+hi,
-                      [](P a,P b){ return a.y<b.y; });
-        strip.clear();
-        for (int i=lo; i<hi; i++)
-            if (fabs(pts[i].x-mx) < best_d) strip.push_back(pts[i]);
-        for (int i=0; i<(int)strip.size(); i++)
-            for (int j=i+1; j<(int)strip.size() && strip[j].y-strip[i].y<best_d; j++) {
-                double d=dist(strip[i],strip[j]);
-                if (d < best_d) { best_d=d; best={strip[i],strip[j]}; }
-            }
-    };
-    solve(0, n);
-    return best;
+    }
+    return min_distance;
 }
 
 int main () {
@@ -84,9 +59,7 @@ int main () {
             cin >> y;
             tree[j] = P(x,y);
         }
-        vector<P> tree_vec(tree, tree + t);
-        auto pair = closest_pair(tree_vec);
-        double shortest_distance = dist(pair.first, pair.second);
+        double shortest_distance = min_distance(tree, t);
         double max_area = (shortest_distance/2)*(shortest_distance/2)*3.141592653589793;
 
         cout << fixed;
