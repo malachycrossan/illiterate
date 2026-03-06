@@ -1,0 +1,7 @@
+gabe-files/bullseye.cpp: In function ‘int main()’:
+gabe-files/bullseye.cpp:8:30: warning: unused variable ‘rings’ [-Wunused-variable]
+    8 |     long long radius, paint, rings, curr; // current radius, current paint
+      |                              ^~~~~
+gabe-files/bullseye.cpp:8:37: warning: unused variable ‘curr’ [-Wunused-variable]
+    8 |     long long radius, paint, rings, curr; // current radius, current paint
+      |                                     ^~~~

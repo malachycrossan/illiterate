@@ -1,0 +1,22 @@
+gabe-files/euclid.cpp: In function ‘int main()’:
+gabe-files/euclid.cpp:8:13: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+    8 |     while(a != b != c != d != e != f != 0) {
+      |           ~~^~~~
+gabe-files/euclid.cpp:8:18: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+    8 |     while(a != b != c != d != e != f != 0) {
+      |           ~~~~~~~^~~~
+gabe-files/euclid.cpp:8:23: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+    8 |     while(a != b != c != d != e != f != 0) {
+      |           ~~~~~~~~~~~~^~~~
+gabe-files/euclid.cpp:8:28: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+    8 |     while(a != b != c != d != e != f != 0) {
+      |           ~~~~~~~~~~~~~~~~~^~~~
+gabe-files/euclid.cpp:8:33: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+    8 |     while(a != b != c != d != e != f != 0) {
+      |           ~~~~~~~~~~~~~~~~~~~~~~^~~~
+gabe-files/euclid.cpp:5:30: warning: unused variable ‘g’ [-Wunused-variable]
+    5 |     double a, b, c, d, e, f, g, h;
+      |                              ^
+gabe-files/euclid.cpp:5:33: warning: unused variable ‘h’ [-Wunused-variable]
+    5 |     double a, b, c, d, e, f, g, h;
+      |                                 ^

@@ -1,0 +1,4 @@
+gabe-files/speed.cpp: In function ‘int main()’:
+gabe-files/speed.cpp:9:12: warning: unused variable ‘t’ [-Wunused-variable]
+    9 |     double t, low, mid, total, time;
+      |            ^

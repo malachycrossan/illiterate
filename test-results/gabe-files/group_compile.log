@@ -1,0 +1,4 @@
+gabe-files/group.cpp: In function ‘void printQueries(int)’:
+gabe-files/group.cpp:9:9: warning: unused variable ‘week’ [-Wunused-variable]
+    9 |     int week;
+      |         ^~~~

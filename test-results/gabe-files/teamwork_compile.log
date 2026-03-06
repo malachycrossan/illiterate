@@ -1,0 +1,4 @@
+gabe-files/teamwork.cpp: In function ‘int main()’:
+gabe-files/teamwork.cpp:41:15: warning: unused variable ‘teamvals’ [-Wunused-variable]
+   41 |         int * teamvals = new int[teams];
+      |               ^~~~~~~~

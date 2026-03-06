@@ -1,0 +1,4 @@
+gabe-files/sushi.cpp:1:10: fatal error: iostream>: No such file or directory
+    1 | #include <iostream>e
+      |          ^~~~~~~~~~~
+compilation terminated.
