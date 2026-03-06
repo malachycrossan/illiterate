@@ -1,0 +1,7 @@
+2026-03-06-Competition/ufo.cpp: In function ‘int main()’:
+2026-03-06-Competition/ufo.cpp:375:215: error: expected ‘;’ before ‘cout’
+  375 |         cout << "A: " << A << "B: " << B << "you: " << you.x << " " << you.y << "youUnit: " << youUnit.x << " " << youUnit.y << "mulder: " << mulder.x << " " << mulder.y << "mulder: " << mulder.x << " " << mulder.y
+      |                                                                                                                                                                                                                       ^
+      |                                                                                                                                                                                                                       ;
+  376 |         cout << intersect(a,b).pt[0].x << endl;
+      |         ~~~~                                                                                                                                                                                                           
