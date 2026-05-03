@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
-#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -349,30 +348,4 @@ pair<P,P> closest_pair(vector<P> pts) {
     };
     solve(0, n);
     return best;
-}
-
-int main () {
-    int t;
-    cin >> t;
-
-    long d;
-    double A, B;
-    for (int i = 0; i < t; i++) {
-        cin >> d;
-        cin >> A;
-        cin >> B;
-
-        A = A * PI / 180.0;
-        B = B * PI / 180.0;
-        P you = P(0,0);
-        P youUnit = you + P(cos(A),sin(A));
-        P mulder = P(d,0);
-        P mulderUnit = mulder + P(-cos(B),sin(B));
-
-        line a = line(you, youUnit);
-        line b = line(mulder, mulderUnit);
-
-        cout << "A: " << A << "B: " << B << "you: " << you.x << " " << you.y << "youUnit: " << youUnit.x << " " << youUnit.y << "mulder: " << mulder.x << " " << mulder.y << "mulderUnit: " << mulderUnit.x << " " << mulderUnit.y << endl;
-        cout << intersect(a,b).pt[0].x << endl;
-    }
 }
